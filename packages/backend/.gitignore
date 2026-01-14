@@ -1,0 +1,21 @@
+# Fichiers de build
+dist/
+node_modules/
+.turbo/
+
+# Fichiers de configuration locale
+.env
+.env.local
+.env*.local
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

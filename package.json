@@ -1,0 +1,23 @@
+{
+  "name": "task-manager-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo pour application de gestion de tâches - Entretien technique",
+  "scripts": {
+    "predev": "bash scripts/start-mongodb.sh || echo '⚠️  Impossible de démarrer MongoDB automatiquement. Démarrez-le manuellement.'",
+    "dev:backend": "pnpm --filter backend dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev": "pnpm --parallel --filter backend --filter frontend dev",
+    "postdev": "echo '\n💡 Pour arrêter MongoDB: docker compose down'",
+    "build:backend": "pnpm --filter backend build",
+    "build:frontend": "pnpm --filter frontend build",
+    "build": "pnpm --filter backend build && pnpm --filter frontend build",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
