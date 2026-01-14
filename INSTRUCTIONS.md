@@ -1,6 +1,6 @@
 # Instructions - Test Technique
 
-**Durée estimée : 6-8 heures**
+**Durée estimée : 4 heures**
 
 L'objectif de ce test est d'évaluer votre capacité à améliorer une application existante en identifiant et en résolvant des problématiques réelles de développement.
 
@@ -15,7 +15,7 @@ L'application fonctionne actuellement mais présente plusieurs problèmes de con
 
 ## Tâches à réaliser
 
-### 1. Migration vers une base de données MongoDB (5-6h)
+### 1. Migration vers une base de données MongoDB (2-3h)
 
 **Problème actuel :** Les données sont stockées en mémoire et sont perdues à chaque redémarrage du serveur.
 
@@ -42,7 +42,7 @@ L'application fonctionne actuellement mais présente plusieurs problèmes de con
 
 ---
 
-### 2. Validation des données d'entrée (1-2h)
+### 2. Validation des données d'entrée (1h)
 
 **Problème actuel :** Aucune validation robuste des données envoyées par le client.
 
@@ -62,7 +62,7 @@ L'application fonctionne actuellement mais présente plusieurs problèmes de con
 
 ---
 
-### 3. Gestion des erreurs API (1-2h)
+### 3. Gestion des erreurs API (1h)
 
 **Problème actuel :** Les erreurs réseau et serveur ne sont pas gérées correctement dans le frontend.
 
