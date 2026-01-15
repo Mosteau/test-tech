@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 import Statistics from './components/Statistics';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
@@ -6,7 +7,8 @@ import { useTasks } from './useTasks';
 import './App.css';
 
 function App() {
-  const { tasks, loading, error, createTask, updateTask, deleteTask } = useTasks();
+  // configuration du toaster pour afficher les erreurs à l'utilisateur
+  const { tasks, loading, createTask, updateTask, deleteTask } = useTasks();
   const [filter, setFilter] = useState<'all' | 'todo' | 'in-progress' | 'done'>('all');
 
   const filteredTasks = filter === 'all' ? tasks : tasks.filter((task) => task.status === filter);
@@ -19,12 +21,36 @@ function App() {
     return <div className="loading">Loading...</div>;
   }
 
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
-
   return (
     <div className="app">
+      {/* Composant Toaster pour afficher les notifications */}
+      {/* Position top-right, durée par défaut 4s */}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+            fontSize: '14px',
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: '#4ade80',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            duration: 5000,
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
+      
       <header className="app-header">
         <h1>Task Manager</h1>
         <p>Gérez vos tâches efficacement</p>
