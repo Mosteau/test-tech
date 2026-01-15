@@ -4,7 +4,22 @@ import { HydratedDocument } from 'mongoose';
 // ici on exporte le schema Task en document mongoose 
 export type TaskDocument = HydratedDocument<Task>;
 
-@Schema({ timestamps: true }) //timestamps va gérer automatiquement createdAt/updatedAt
+// Configuration du schéma avec options
+// timestamps: true -> gère automatiquement createdAt/updatedAt
+@Schema({ 
+    timestamps: true,
+    toJSON: {
+        // doc: le document Mongoose original
+        // ret: l'objet JavaScript retourné (qu'on peut modifier)
+        // on renomme __id en id pour l'api rest et Front qui attend id
+        transform: (doc, ret) => {
+            (ret as any).id = ret._id.toString();
+            delete ret._id;
+            delete ret.__v;
+            return ret;
+        }
+    }
+})
 export class Task {
     // le @Prop()Le décorateur définit une propriété dans le document
     @Prop({ required: true }) // champs obligatoires

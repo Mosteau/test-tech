@@ -1,71 +1,71 @@
 import { useCallback, useEffect, useState } from 'react';
 import { api } from './api';
 import type { Task } from './types';
+import { handleApiError, showSuccess } from './utils/errorHandler';
 
-// TODO AMÉLIORATION: Remplacer par React Query ou SWR
-// - Gestion automatique du cache, revalidation, et synchronisation
-// - Mutations optimistes pour une meilleure UX
-// - Gestion intégrée du loading et des erreurs
-// - Exemple: const { data, isLoading, error, mutate } = useSWR('/api/tasks', fetcher)
-// Problème : hook qui fait trop de choses
-// Problème : pas de cache, refetch à chaque utilisation
+// Utilise le gestionnaire d'erreurs centralisé avec toasts
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
+  // récupère toutes les tâches depuis l'API
   const fetchTasks = useCallback(async () => {
     try {
       setLoading(true);
       const data = await api.getTasks();
       setTasks(data);
-      setError(null);
     } catch (err) {
-      setError('Failed to fetch tasks');
-      console.error(err);
+      // gestion d'erreur centralisée - affiche un toast
+      handleApiError(err, 'récupérer les tâches');
     } finally {
       setLoading(false);
     }
   }, []);
 
+  // charge les tâches au montage du composant
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
 
+  // crée une nouvelle tâche
   const createTask = async (title: string, description: string) => {
     try {
       const newTask = await api.createTask({ title, description });
       setTasks([...tasks, newTask]);
+      // affiche un toast de succès
+      showSuccess('Tâche créée avec succès !');
     } catch (err) {
-      setError('Failed to create task');
-      console.error(err);
+      handleApiError(err, 'créer la tâche');
     }
   };
 
+  // met à jour une tâche existante
   const updateTask = async (id: string, updates: Partial<Task>) => {
     try {
       const updatedTask = await api.updateTask(id, updates);
       setTasks(tasks.map((task) => (task.id === id ? updatedTask : task)));
+      // affiche un toast pour la mise à jour
+      showSuccess('Tâche mise à jour !');
     } catch (err) {
-      setError('Failed to update task');
-      console.error(err);
+      handleApiError(err, 'mettre à jour la tâche');
     }
   };
 
+  // supprime une tâche
   const deleteTask = async (id: string) => {
     try {
       await api.deleteTask(id);
       setTasks(tasks.filter((task) => task.id !== id));
+      //affiche un toast de suppression
+      showSuccess('Tâche supprimée !');
     } catch (err) {
-      setError('Failed to delete task');
-      console.error(err);
+      handleApiError(err, 'supprimer la tâche');
     }
   };
 
   return {
     tasks,
     loading,
-    error,
     createTask,
     updateTask,
     deleteTask,
