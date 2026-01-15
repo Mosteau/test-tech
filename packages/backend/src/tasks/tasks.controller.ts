@@ -11,7 +11,7 @@ import {
   BadRequestException, // gère les données invalides, 400
   InternalServerErrorException // gère erreur serveur, 500
 } from '@nestjs/common';
-import type { CreateTaskDto, UpdateTaskDto } from './task.interface';
+import { CreateTaskDto, UpdateTaskDto } from './task.interface';
 import { TasksService } from './tasks.service';
 
 @Controller('tasks')
@@ -57,10 +57,10 @@ export class TasksController {
 
   @Post()
   async createTask(@Body() createTaskDto: CreateTaskDto) {
-    // validation basique (sera remplacée par class-validator plus tard)
-    if (!createTaskDto.title || !createTaskDto.description) {
-      throw new BadRequestException('Title and description are required');
-    }
+    // vplus besoin de validation manuelle
+    // if (!createTaskDto.title || !createTaskDto.description) {
+    //   throw new BadRequestException('Title and description are required');
+    // }
 
     // crée la tâche dans MongoDB
     return this.tasksService.createTask(createTaskDto);

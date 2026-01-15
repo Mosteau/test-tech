@@ -1,9 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
+// ajour validatorPipe pour valider les requêtes entraintes
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // configuration pipe en global
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,// Supprime les propriétés non décorées du DTO
+      forbidNonWhitelisted: true, // Rejette les requêtes avec propriétés inconnues
+      transform: true,// Transforme les objets JSON en instances de classe
+      transformOptions: {
+        enableImplicitConversion: true, // Convertit automatiquement les types exemple "5" deviendra 5 si le DTO attend un number
+      },
+    })
+  );
+
   const configService = app.get(ConfigService);
   
   app.enableShutdownHooks();
